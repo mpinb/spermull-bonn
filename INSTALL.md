@@ -25,6 +25,16 @@ sudo apt install nodejs npm
 # For CentOS/RHEL
 sudo yum install nodejs npm
 ```
+**NOTE:** To run `nodejs` in soma I used `nvm` then you don't need `sudo` level access to install packages. 
+The last compatible version of node for CentOS 7 is 16
+```bash
+somalogin01 ~/spermull-bonn (sperrmul-frontend) $ nvm use 16
+Now using node v16.20.2 (npm v8.19.4)
+somalogin01 ~/spermull-bonn (sperrmul-frontend) $ npm --version
+8.19.4
+somalogin01 ~/spermull-bonn (sperrmul-frontend) $ node --version
+v16.20.2
+```
 
 ## Install Tailwind CSS dependencies:
 ```bash
