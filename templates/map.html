@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Event Map{% endblock %}
+
+{% block head %}
+<style>
+    #map {
+        height: 600px;
+        width: 100%;
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+    <h2 class="text-2xl font-bold mb-4 text-blue-700">Event Map - Bonn</h2>
+    <p class="mb-4 text-gray-700">Click on the pins to see event details.</p>
+    
+    <div id="map" class="shadow-md"></div>
+    
+    <div class="mt-6 text-center">
+        <a href="/form" class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors duration-200">
+            Search Again
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the map centered on the provided location
+        const map = L.map('map').setView([{{ center_lat }}, {{ center_lng }}], 13);
+        
+        // Add the tile layer (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Add a marker for the center location
+        L.marker([{{ center_lat }}, {{ center_lng }}])
+            .addTo(map)
+            .bindPopup('Your Selected Location')
+            .openPopup();
+        
+        // Add markers for all generated points
+        const locationData = {{ location_data|safe }};
+        
+        locationData.forEach(point => {
+            L.marker([point.lat, point.lng])
+                .addTo(map)
+                .bindPopup(`<strong>${point.title}</strong><br>Date: ${point.date}`);
+        });
+    });
+</script>
+{% endblock %}
