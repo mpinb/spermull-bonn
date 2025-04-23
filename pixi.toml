@@ -1,0 +1,13 @@
+[workspace]
+authors = ["Bjorge Meulemeester <bjorge.meulemeester@mpinb.mpg.de>"]
+channels = ["conda-forge"]
+name = "spermull-bonn"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+numpy = ">=2.2.5,<3"
+pandas = ">=2.2.3,<3"
+jupyter = ">=1.1.1,<2"
