@@ -1,30 +1,44 @@
-Deployment Instructions
+# Deployment Instructions
+
 Here's how you can set up and run this project on a Linux server:
 
-Clone the repository (assuming you've put this in a Git repository):
-bashgit clone <your-repo-url>
-cd map_app
+## Clone the repository (assuming you've put this in a Git repository):
+```bash
+git clone https://github.com/mpinb/spermull-bonn.git
+cd spermull-bonn
+```
 
-Set up a Python virtual environment:
-bashpython3 -m venv venv
+## Set up a Python virtual environment:
+
+```bash
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+```
 
-Install Node.js and npm (if not already installed):
-bash# For Ubuntu/Debian
+## Install Node.js and npm (if not already installed):
+```bash
+# For Ubuntu/Debian
 sudo apt update
 sudo apt install nodejs npm
 
 # For CentOS/RHEL
 sudo yum install nodejs npm
+```
 
-Install Tailwind CSS dependencies:
-bashnpm install
+## Install Tailwind CSS dependencies:
+```bash
+npm install
+```
 
-Build the CSS:
-bashnpm run build:css
+## Build the CSS:
+```bash
+npm run build:css
+```
 
-Run the Flask application:
-bashpython app.py
+## Run the Flask application:
+```bash
+python app.py
+```
 
-Access the application at http://localhost:5000
+## Access the application at http://localhost:5000
