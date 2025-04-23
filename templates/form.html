@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Enter Location & Dates{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold text-center mb-6 text-blue-700">Enter Your Location & Dates</h2>
+    
+    {% if error %}
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
+    
+    <form action="/map" method="post" id="locationForm">
+        <div class="mb-6">
+            <label class="block text-gray-700 font-semibold mb-2" for="location">Location</label>
+            <div class="flex space-x-2 items-center">
+                <input type="text" id="locationInput" placeholder="Enter an address or city" 
+                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="button" id="getCurrentLocation" 
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </button>
+                <!-- Hidden fields for the actual coordinates -->
+                <input type="hidden" id="latitude" name="latitude" value="50.7374">
+                <input type="hidden" id="longitude" name="longitude" value="7.0982">
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2" for="start_date">Start Date</label>
+                <input type="date" id="start_date" name="start_date" 
+                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2" for="end_date">End Date</label>
+                <input type="date" id="end_date" name="end_date" 
+                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200">
+                Show Map
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set default dates (today and a week from now)
+        const today = new Date();
+        const nextWeek = new Date();
+        nextWeek.setDate(today.getDate() + 7);
+        
+        document.getElementById('start_date').valueAsDate = today;
+        document.getElementById('end_date').valueAsDate = nextWeek;
+        
+        // Get current location button
+        document.getElementById('getCurrentLocation').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    // Update hidden fields
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+                    
+                    // Update location input with coordinates
+                    document.getElementById('locationInput').value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                    
+                    alert('Location updated to your current position.');
+                }, function(error) {
+                    console.error("Error getting location:", error);
+                    alert('Unable to retrieve your location. Please enter it manually.');
+                });
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+    });
+</script>
+{% endblock %}

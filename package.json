@@ -1,0 +1,12 @@
+{
+    "name": "spermull-bonn",
+    "version": "1.0.0",
+    "description": "The Spermull helps you to find used furniture in Bonn. (powered by Bonn-Orange)",
+    "scripts": {
+      "build:css": "tailwindcss -i ./static/src/main.css -o ./static/css/main.css",
+      "watch:css": "tailwindcss -i ./static/src/main.css -o ./static/css/main.css --watch"
+    },
+    "devDependencies": {
+      "tailwindcss": "^3.3.3"
+    }
+  }
