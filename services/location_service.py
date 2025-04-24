@@ -17,14 +17,15 @@ def get_lat_lon_from_date(
     end_date: str,
     ):
     """Get geolocation from a date range"""
-    lat_lon = read_df().loc[
+    lat_lon = read_df(
+    ).loc[  # index within date range
         (slice(start_date, end_date), slice(None)), :
-        ].rename(
+    ].rename(   # rename lat lon columns
         columns={"LAT": "lat", "LON": "lng"}
-        ).reset_index(
+    ).reset_index(  # unravel multi-index to single dates for tooltip
         level='date'
-        )
-    lat_lon['date'] = lat_lon['date'].astype(str)
+    )
+    lat_lon['date'] = lat_lon['date'].astype(str)  # convert to str for serialization
     return lat_lon.to_dict('records')
 
 
