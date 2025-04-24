@@ -2,6 +2,43 @@
 
 {% block title %}Enter Location & Dates{% endblock %}
 
+{% block head %}
+<style>
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        border-radius: 0 0 8px 8px;
+    }
+    
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
+    
+    .autocomplete-items div:hover {
+        background-color: #e9e9e9;
+    }
+    
+    .autocomplete-active {
+        background-color: #e9e9e9 !important;
+    }
+    
+    .autocomplete-container {
+        position: relative;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="max-w-2xl mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
     <h2 class="text-2xl font-bold text-center mb-6 text-blue-700">Enter Your Location & Dates</h2>
@@ -16,8 +53,11 @@
         <div class="mb-6">
             <label class="block text-gray-700 font-semibold mb-2" for="location">Location</label>
             <div class="flex space-x-2 items-center">
-                <input type="text" id="locationInput" placeholder="Enter an address or city" 
-                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="autocomplete-container w-full">
+                    <input type="text" id="locationInput" placeholder="Enter an address or street in Bonn" 
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <div id="autocompleteResults" class="autocomplete-items hidden"></div>
+                </div>
                 <button type="button" id="getCurrentLocation" 
                         class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -85,6 +125,122 @@
                 });
             } else {
                 alert('Geolocation is not supported by your browser.');
+            }
+        });
+        
+        // Setup autocomplete functionality
+        const locationInput = document.getElementById('locationInput');
+        const autocompleteResults = document.getElementById('autocompleteResults');
+        const latitudeInput = document.getElementById('latitude');
+        const longitudeInput = document.getElementById('longitude');
+        
+        let debounceTimer;
+        
+        locationInput.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(function() {
+                const query = locationInput.value.trim();
+                if (query.length >= 2) {
+                    fetchAutocompleteResults(query);
+                } else {
+                    autocompleteResults.innerHTML = '';
+                    autocompleteResults.classList.add('hidden');
+                }
+            }, 300); // 300ms debounce delay
+        });
+        
+        // Hide autocomplete on click outside
+        document.addEventListener('click', function(e) {
+            if (e.target !== locationInput && e.target !== autocompleteResults) {
+                autocompleteResults.classList.add('hidden');
+            }
+        });
+        
+        function fetchAutocompleteResults(query) {
+            fetch(`/autocomplete?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    displayAutocompleteResults(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching autocomplete results:', error);
+                });
+        }
+        
+        function displayAutocompleteResults(results) {
+            autocompleteResults.innerHTML = '';
+            
+            if (results.length === 0) {
+                autocompleteResults.classList.add('hidden');
+                return;
+            }
+            
+            results.forEach(result => {
+                const div = document.createElement('div');
+                div.textContent = result.address;
+                div.addEventListener('click', function() {
+                    locationInput.value = result.address;
+                    latitudeInput.value = result.lat;
+                    longitudeInput.value = result.lng;
+                    autocompleteResults.classList.add('hidden');
+                });
+                autocompleteResults.appendChild(div);
+            });
+            
+            autocompleteResults.classList.remove('hidden');
+        }
+        
+        // Add keyboard navigation for autocomplete results
+        locationInput.addEventListener('keydown', function(e) {
+            if (autocompleteResults.classList.contains('hidden')) return;
+            
+            const items = autocompleteResults.getElementsByTagName('div');
+            if (items.length === 0) return;
+            
+            let activeItem = autocompleteResults.querySelector('.autocomplete-active');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (!activeItem) {
+                    items[0].classList.add('autocomplete-active');
+                } else {
+                    activeItem.classList.remove('autocomplete-active');
+                    const nextItem = activeItem.nextElementSibling;
+                    if (nextItem) {
+                        nextItem.classList.add('autocomplete-active');
+                    } else {
+                        items[0].classList.add('autocomplete-active');
+                    }
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (!activeItem) {
+                    items[items.length - 1].classList.add('autocomplete-active');
+                } else {
+                    activeItem.classList.remove('autocomplete-active');
+                    const prevItem = activeItem.previousElementSibling;
+                    if (prevItem) {
+                        prevItem.classList.add('autocomplete-active');
+                    } else {
+                        items[items.length - 1].classList.add('autocomplete-active');
+                    }
+                }
+            } else if (e.key === 'Enter' && activeItem) {
+                e.preventDefault();
+                locationInput.value = activeItem.textContent;
+                
+                // Find the matching result to get coordinates
+                for (let result of results) {
+                    if (result.address === activeItem.textContent) {
+                        latitudeInput.value = result.lat;
+                        longitudeInput.value = result.lng;
+                        break;
+                    }
+                }
+                
+                autocompleteResults.classList.add('hidden');
+            } else if (e.key === 'Escape') {
+                autocompleteResults.classList.add('hidden');
             }
         });
     });
