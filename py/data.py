@@ -1,6 +1,5 @@
-import pandas as pd
 from isf_pandas_msgpack import read_msgpack
-import datetime, os
+import os
 
 wd = os.path.dirname(__file__)
 DATA_DIR = os.path.abspath(os.path.join(wd, "..", "data"))
