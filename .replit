@@ -1,1 +1,24 @@
-run = "python app.py"
+run = "node index.js"
+modules = ["web", "python-3.12", "nodejs-20"]
+
+[deployment]
+run = ["sh", "-c", "node index.js"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Run"
+
+[[workflows.workflow]]
+name = "Run"
+author = 41880906
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python app.py"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
