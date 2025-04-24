@@ -1,28 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Welcome to Map App{% endblock %}
+{% block title %}Welcome to Sperrmüll Bonn{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
-    <h2 class="text-3xl font-bold text-center mb-6 text-blue-700">Welcome to the Interactive Map App</h2>
-    
-    <div class="mb-8 text-gray-700">
-        <p class="mb-4">This application allows you to see events on a map based on your location and selected dates.</p>
-        
-        <h3 class="text-xl font-semibold mb-2 text-blue-600">How to use:</h3>
-        <ol class="list-decimal pl-6 space-y-2">
-            <li>Click the "Continue" button below to go to the input form</li>
-            <li>Enter your location or use your current location</li>
-            <li>Select a date or a range of dates</li>
-            <li>Submit the form to see events on the map</li>
-            <li>Click on pins to see information about each event</li>
-        </ol>
+<div class="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg relative">
+    <!-- Logo image as a background element -->
+    <div class="absolute inset-0 flex justify-center opacity-15 pointer-events-none">
+        <img src="{{ url_for('static', filename='img/spermull-bonn-logo.png') }}" 
+             alt="Sperrmüll Bonn Logo" class="object-contain">
     </div>
     
-    <div class="text-center">
-        <a href="/form" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-xl transition-colors duration-200">
-            Continue
-        </a>
+    <!-- Content overlaid on the background -->
+    <div class="relative z-10">
+        <h2 class="text-3xl font-bold text-center mb-6 text-blue-700">Welcome to Sperrmüll Bonn</h2>
+        
+        <div class="mb-8 text-gray-700">
+            <p class="mb-4">This application allows you to see Sperrmüll collection events on a map based on your location and selected dates.</p>
+            
+            <h3 class="text-xl font-semibold mb-2 text-blue-600">How to use:</h3>
+            <ol class="list-decimal pl-6 space-y-2">
+                <li>Click the "Continue" button below to go to the input form</li>
+                <li>Enter your location or use your current location</li>
+                <li>Select a date or a range of dates</li>
+                <li>Submit the form to see Sperrmüll collection events on the map</li>
+                <li>Click on pins to see information about each collection event</li>
+            </ol>
+        </div>
+        
+        <div class="text-center">
+            <a href="/form" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-xl transition-colors duration-200">
+                Continue
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %}
