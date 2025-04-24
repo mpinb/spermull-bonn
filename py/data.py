@@ -12,4 +12,4 @@ def get_lat_lon_from_date(
     date: str
     ):
     """Get geolocation from a datetime"""
-    return read_df().xs(date, level='date')[['LAT', 'LON']].values
+    return read_df().xs(date, level='date')[['LAT', 'LON']]

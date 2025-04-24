@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import json
 from datetime import datetime, timedelta
 import random
-from services.location_service import generate_points_around_location
+from services.location_service import generate_points_around_location, get_lat_lon_from_date
 
 app = Flask(__name__)
 
@@ -34,16 +34,18 @@ def show_map():
             
         # Process the data
         try:
-            location_data = generate_points_around_location(
-                float(latitude), 
-                float(longitude), 
-                start_date_str,
-                end_date_str
-            )
-            return render_template('map.html', 
-                                  center_lat=latitude, 
-                                  center_lng=longitude,
-                                  location_data=json.dumps(location_data))
+            # location_data = generate_points_around_location(
+            #     float(latitude), 
+            #     float(longitude), 
+            #     start_date_str,
+            #     end_date_str
+            # )
+            lat_lon = get_lat_lon_from_date(start_date_str, end_date_str)
+            return render_template(
+                'map.html', 
+                center_lat=latitude, 
+                center_lng=longitude,
+                location_data=json.dumps(lat_lon))
         except Exception as e:
             return render_template('form.html', error=str(e))
     else:

@@ -1,6 +1,32 @@
 import random
 import math
 from datetime import datetime, timedelta
+import pandas as pd
+from isf_pandas_msgpack import read_msgpack
+import os
+
+wd = os.path.dirname(__file__)
+DATA_DIR = os.path.abspath(os.path.join(wd, "..", "data"))
+DF_PATH = os.path.join(DATA_DIR, "geo_dates.msg")
+
+def read_df():
+    return read_msgpack(DF_PATH)
+
+def get_lat_lon_from_date(
+    start_date: str,
+    end_date: str,
+    ):
+    """Get geolocation from a date range"""
+    lat_lon = read_df().loc[
+        (slice(start_date, end_date), slice(None)), :
+        ].rename(
+        columns={"LAT": "lat", "LON": "lng"}
+        ).reset_index(
+        level='date'
+        )
+    lat_lon['date'] = lat_lon['date'].astype(str)
+    return lat_lon.to_dict('records')
+
 
 def generate_points_around_location(lat, lng, start_date_str, end_date_str, radius_km=10, num_points=15):
     """

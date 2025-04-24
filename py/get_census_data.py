@@ -1,5 +1,3 @@
-
-
 from pyproj import Transformer
 import json
 import urllib

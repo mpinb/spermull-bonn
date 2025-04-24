@@ -22,9 +22,11 @@ def parse_row(row):
       results = {'LAT': lat, 'LON': long, 'Einwohner': None, 'durchschnMieteQM': None, 'durchschnFlaechejeWohn': None}
    return results
 
-dicts = []
+if __name__ == '__main__':
+   
+   dicts = []
 
-addr = pd.read_csv('geocoded_addr.csv')
-parsed_df = addr.progress_apply(lambda row: parse_row(row), axis=1, result_type='expand')
-addr = pd.concat([addr, parsed_df], axis=1)
-addr.to_csv('geocoded_addr_zensus2022.csv', index=False)
+   addr = pd.read_csv('geocoded_addr.csv')
+   parsed_df = addr.progress_apply(lambda row: parse_row(row), axis=1, result_type='expand')
+   addr = pd.concat([addr, parsed_df], axis=1)
+   addr.to_csv('geocoded_addr_zensus2022.csv', index=False)

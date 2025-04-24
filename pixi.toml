@@ -23,6 +23,9 @@ markupsafe = ">=3.0.2,<4"
 click = ">=8.1.8,<9"
 itsdangerous = ">=2.2.0,<3"
 python-dotenv = ">=1.1.0,<2"
+pyproj = ">=3.7.1,<4"
+plotly = ">=6.0.1,<7"
+geopandas = ">=1.0.1,<2"
 
 [pypi-dependencies]
 osmium = ">=4.0.2, <5"
