@@ -15,6 +15,7 @@ osmpythontools = ">=0.3.5,<0.4"
 geopy = ">=2.4.1,<3"
 tqdm = ">=4.67.1,<5"
 selenium = ">=4.31.0,<5"
+bs4 = ">=4.13.4,<5"
 
 [pypi-dependencies]
 osmium = ">=4.0.2, <5"
