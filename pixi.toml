@@ -1,5 +1,10 @@
 [workspace]
-authors = ["Bjorge Meulemeester <bjorge.meulemeester@mpinb.mpg.de>"]
+authors = [
+    "Bjorge Meulemeester <bjorge.meulemeester@mpinb.mpg.de>",
+    "Omar Valerio <omar.valerio@mpinb.mpg.de>",
+    "Aditya Iyer <aditya.iyer@mpinb.mpg.de>",
+    "Sercan Yegin <sercan.yegin@mpinb.mpg.de>"
+]
 channels = ["conda-forge"]
 name = "spermull-bonn"
 platforms = ["linux-64"]
