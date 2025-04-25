@@ -6,4 +6,6 @@ click==8.1.7
 itsdangerous==2.1.2
 python-dotenv==1.0.0
 isf-pandas-msgpack==0.2.3
-pandas==2.0.3
+pandas==2.2.1
+itsdangerous==2.1.2
+numpy==1.26.4
