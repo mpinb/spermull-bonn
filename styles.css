@@ -1,0 +1,15 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    letter-spacing: 1px;
+}
+
+/* Optional: Enhance the map's appearance */
+#map {
+    border-radius: 0.5rem; /* matches Bootstrap's rounded */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); /* subtle shadow */
+}
+
+/* No layout or form styles needed; Bootstrap classes handle those */
