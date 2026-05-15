@@ -4,8 +4,7 @@ df_address = pd.read_csv("coordinates_parsed.csv")
 df_address['TERMIN001'] = None
 df_address['TERMIN002'] = None 
 df_address['TERMIN003'] = None
-df_dates = pd.read_csv("spermullterminebonn2025.csv")
-df_dates = df_dates[df_dates['PLAN_BEZ'] == 'Sperrmüll']
+df_dates = pd.read_csv("spermull_only_2026.csv")
 df_dates = df_dates[['STRASSE1', 'HNR_GE_AB','HNR_GE_BIS','HNR_UG_AB','HNR_UG_BIS','TERMIN001','TERMIN002','TERMIN003']]
 
 for i, row in df_address.iterrows():
