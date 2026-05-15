@@ -1,0 +1,11 @@
+
+# pixi environments
+.pixi
+*.egg-info
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Flask-only directories (not part of static-version)
+services/
